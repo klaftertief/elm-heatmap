@@ -95,6 +95,9 @@ view model =
             , Svg.Attributes.style "position: fixed; top: 0; bottom: 0;"
             , Svg.Events.on "mousemove"
                 (Json.map AddPoint clientPosition)
+            , Html.Events.onWithOptions "touchmove"
+                { preventDefault = True, stopPropagation = False }
+                (Json.map AddPoint <| Json.at [ "touches", "0" ] clientPosition)
             ]
             [ Heatmap.view
                 (heatmapConfig model)
@@ -104,7 +107,9 @@ view model =
             [ Html.Attributes.style
                 [ ( "position", "relative" )
                 , ( "padding", "2px 16px" )
-                , ( "margin", "32px" )
+                , ( "margin", "0 auto" )
+                , ( "top", "32px" )
+                , ( "max-width", "800px" )
                 , ( "background", "rgba(0,0,0,0.1)" )
                 , ( "border-radius", "2px" )
                 , ( "font-family", "sans-serif" )
@@ -115,6 +120,7 @@ view model =
                     [ ( "display", "flex" )
                     , ( "justify-content", "space-around" )
                     , ( "align-items", "flex-end" )
+                    , ( "flex-wrap", "wrap" )
                     ]
                 ]
                 [ Html.label []
